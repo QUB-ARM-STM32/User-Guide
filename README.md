@@ -1,5 +1,23 @@
 # Getting Started With An STM32L4R5ZI Board
 
+## Contents
+- [Getting Started With An STM32L4R5ZI Board](#getting-started-with-an-stm32l4r5zi-board)
+  - [Contents](#contents)
+  - [Introduction](#introduction)
+  - [Prerequisites](#prerequisites)
+- [Installation](#installation)
+  - [STM32CubeMX](#stm32cubemx)
+    - [Installation](#installation-1)
+  - [STM32CubeIDE](#stm32cubeide)
+    - [Installation](#installation-2)
+  - [STM32CubeProgrammer](#stm32cubeprogrammer)
+    - [Installation](#installation-3)
+  - [STM32L4R5ZI Board Drivers](#stm32l4r5zi-board-drivers)
+- [Creating a New Project](#creating-a-new-project)
+  - [Creating a New Project in STM32CubeIDE](#creating-a-new-project-in-stm32cubeide)
+  - [Configuring the Project](#configuring-the-project)
+  - [Flashing an LED](#flashing-an-led)
+
 ## Introduction
 The STM32L4R5ZI is a 32-bit ARM Cortex-M4 microcontroller. It contains 2MB flash memory, 64KB of SRAM and a 120MHz clock frequency. These microcontrollers have been designed to run at ultra-low power, making them ideal for high performance battery power applications.
 
@@ -46,15 +64,15 @@ To use our board we will need to install the correct libraries for it:
 
 1. Open the STM32CubeMX program
 
-![STM32CubeMX](/Images/CubeMX.png)
+    ![STM32CubeMX](/Images/CubeMX.png)
 
 2. Click on the `Help` tab and then select `Manage embedded software packages`
 
-![Embedded Software Packages](/Images/Help.png)
+    ![Embedded Software Packages](/Images/Help.png)
 
 3. Search through the list for `STM32L4`, expand this and install the latest version (at time of writing this is version 1.17.2)
 
-![Packages](/Images/Packages.png)
+    ![Packages](/Images/Packages.png)
 
 # Creating a New Project
 
@@ -65,37 +83,37 @@ There is two ways to create a new project using the STM tools. The first is to u
 1. Open the STM32CubeIDE program and select your workspace.
 2. It make take some time to first open the program, when it opens go to `File` -> `New` -> `STM32 Project`
 
-![New Project](/Images/NewProject.png)
+    ![New Project](/Images/NewProject.png)
 
 3. A new window will open with the following
 
-![New Project Window](/Images/NewProjectWindow.png)
+    ![New Project Window](/Images/NewProjectWindow.png)
 
 4. Select the `Board Selector` tab
 
-![Board Selector](/Images/BoardSelector.png)
+    ![Board Selector](/Images/BoardSelector.png)
 
 5. Search through the list of available boards, select `NUCLEO-L4R5ZI` then click `Next`
 
-![Board Selected](Images/BoardSelected.png)
+    ![Board Selected](Images/BoardSelected.png)
 
 6. The following window will appear. Enter a name and location to keep the project. We are using C in this tutorial, however you can also use C++ if you wish. Keep all other settings as they are below. Finally click `Finish`
 
-![Project Name](/Images/ProjectName.png)
+    ![Project Name](/Images/ProjectName.png)
 
 7. A window will appear asking if you want to set up all peripherals with default settings. Click `Yes`
 
-![Default Mode](Images/DefaultMode.png)
+    ![Default Mode](Images/DefaultMode.png)
 
 8. The project will now be created. This may take some time. Once it is complete you will see your project in the `Project Explorer` window.
 
-![Project Explorer](Images/ProjectExplorer.png)
+    ![Project Explorer](Images/ProjectExplorer.png)
 
 ## Configuring the Project
 
 1. To configure the project double click the `.ioc` file in the `Project Explorer` window. This will open the STM32CubeMX program inside the IDE.
 
-![Configuration](Images/Configuration.png)
+    ![Configuration](Images/Configuration.png)
 
 2. Click on the `Project Manager` -> `Code Generator`. Ensure the options are the same as below
 
@@ -109,7 +127,7 @@ Now that we have our project set up we can start writing some code. We are going
 
 1. Open the `.ioc` file again to view the pins of the microcontroller. Look for `PC7`. Click on it and set the mode to `GPIO_Output`. Ensure to save the changes, you will then be prompted to generate code, **always** click `Yes` or you will not see your changes.
 
-![PC7](Images/LED1Config.png)
+    ![PC7](Images/LED1Config.png)
 
 2. Open the `main.c` file from `Core/Src` in the `Project Explorer` window. Locate the `main` method and add the following code after `/* USER CODE BEGIN 3 */` in the `while` loop
 
@@ -126,4 +144,4 @@ Now that we have our project set up we can start writing some code. We are going
 
 5. Observer the board, the green LED should be toggled on and off every half a second.
 
-![Blinking LED](Images/Blinking.gif)
+    ![Blinking LED](Images/Blinking.gif)

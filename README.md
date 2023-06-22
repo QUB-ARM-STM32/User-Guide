@@ -86,3 +86,44 @@ There is two ways to create a new project using the STM tools. The first is to u
 7. A window will appear asking if you want to set up all peripherals with default settings. Click `Yes`
 
 ![Default Mode](Images/DefaultMode.png)
+
+8. The project will now be created. This may take some time. Once it is complete you will see your project in the `Project Explorer` window.
+
+![Project Explorer](Images/ProjectExplorer.png)
+
+## Configuring the Project
+
+1. To configure the project double click the `.ioc` file in the `Project Explorer` window. This will open the STM32CubeMX program inside the IDE.
+
+![Configuration](Images/Configuration.png)
+
+2. Click on the `Project Manager` -> `Code Generator`. Ensure the options are the same as below
+
+    ![Code Generator Settings](Images/CodeGenerator.png)
+
+    This will ensure that the your code is kept if you make any setup changes in the future.
+
+## Flashing an LED
+
+Now that we have our project set up we can start writing some code. We are going to flash the green onboard LED on the board. This is a simple task to ensure everything is working correctly.
+
+1. Open the `.ioc` file again to view the pins of the microcontroller. Look for `PC7`. Click on it and set the mode to `GPIO_Output`. Ensure to save the changes, you will then be prompted to generate code, **always** click `Yes` or you will not see your changes.
+
+![PC7](Images/LED1Config.png)
+
+2. Open the `main.c` file from `Core/Src` in the `Project Explorer` window. Locate the `main` method and add the following code after `/* USER CODE BEGIN 3 */` in the `while` loop
+
+    ```c
+    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_7);
+	HAL_Delay(500);
+    ```
+
+    This will toggle the state of the pin that the green LED is connected to. It will then wait for 500ms before toggling it again. As this is in the `while` loop it will continue to do this forever.
+
+3. To build our project go to `Project` -> `Build Project`. This will build our project and generate the necessary files to run on the microcontroller.
+
+4. To flash our project and run it we go to `Run` -> `Run`, a window may appear asking you to edit the launch configuration. Click `OK` and the program will be flashed to the microcontroller.
+
+5. Observer the board, the green LED should be toggled on and off every half a second.
+
+![Blinking LED](Images/Blinking.gif)

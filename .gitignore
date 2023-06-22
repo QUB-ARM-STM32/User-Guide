@@ -50,3 +50,6 @@ release
 *.su
 *.idb
 *.pdb
+
+# Hello World Example will be ignored
+Hello World/

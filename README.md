@@ -17,6 +17,11 @@
   - [Creating a New Project in STM32CubeIDE](#creating-a-new-project-in-stm32cubeide)
   - [Configuring the Project](#configuring-the-project)
   - [Flashing an LED](#flashing-an-led)
+- [Debugging](#debugging)
+  - [Advanced Debugging](#advanced-debugging)
+    - [Variables](#variables)
+    - [Registers](#registers)
+    - [Memory](#memory)
 
 ## Introduction
 The STM32L4R5ZI is a 32-bit ARM Cortex-M4 microcontroller. It contains 2MB flash memory, 64KB of SRAM and a 120MHz clock frequency. These microcontrollers have been designed to run at ultra-low power, making them ideal for high performance battery power applications.
@@ -145,3 +150,53 @@ Now that we have our project set up we can start writing some code. We are going
 5. Observer the board, the green LED should be toggled on and off every half a second.
 
     ![Blinking LED](Images/Blinking.gif)
+
+# Debugging
+
+The STM32L4R5ZI comes with a built in debugger. This allows us to step through our code and view some very useful information such as variables, registers and memory.
+
+1. Add a breakpoint to our code to set it to automatically stop when it reaches this point. To do this `right click` the line number of the line you want to stop at and select `Toggle Breakpoint`
+
+    ![Breakpoint](Images/Breakpoint.png)
+
+    It will appear as a blue dot beside the line number indicating that it is a breakpoint.
+
+    ![Toggled Breakpoint](Images/Toggled.png)
+
+2. Start debugging by going to `Run` -> `Debug`. It may ask you to switch to the `Debug Perspective`, click `Yes`. The editor will change slightly to show the `Debug` window.
+
+3. Before running the program the debugger always stops on the first line of the `main` function. To continue to our breakpoint press the `Resume` button in the top left.
+
+    ![Resume](Images/Resume.png)
+
+4. This will run until the breakpoint we set earlier. The line will be highlighted and we can choose what to do next. We can step through the code line by line using the `Step Over` button. This will execute the current line and move to the next. We can also step into a function using the `Step Into` button. This will move to the next line of code and if it is a function it will move into that function.
+
+    We will step over the TogglePin function.
+
+    ![Step Over](Images/StepOver.png)
+
+5. We will now see that our LED has turned on and our debugger is waiting for our next command.
+
+6. To stop debugging we can click the `Terminate` button in the top left.
+
+    ![Terminate](Images/Terminate.png)
+
+
+## Advanced Debugging
+
+The debugger has many more features that we can use to help us debug our code. Three very useful features are the ability to view variables, registers and memory.
+
+### Variables
+
+If we want to view the variables when debugging we can use the `Variables` window. This will show us the current value of all variables in the current scope. To view this window go to `Window` -> `Show View` -> `Variables`.
+    ![Variables](Images/Variables.png)
+
+### Registers
+
+To view the processors registers we can the `Registers` window. This will show us the current value of all registers. To view this window go to `Window` -> `Show View` -> `Registers`.
+    ![Registers](Images/Registers.png)
+
+### Memory
+
+To view the memory we can the `Memory Browser` window. This will show us the current value of all memory locations and allows us to search through the memory. To view this window go to `Window` -> `Show View` -> `Memory Browser`.
+    ![Memory](Images/MemoryBrowser.png)

@@ -3,7 +3,7 @@
 ## Contents
 - [Getting Started With An STM32L4R5ZI Board](#getting-started-with-an-stm32l4r5zi-board)
   - [Contents](#contents)
-  - [Prerequisites](#prerequisites)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
   - [STM32CubeMX](#stm32cubemx)
     - [Installation](#installation-1)
@@ -23,7 +23,7 @@
     - [Memory](#memory)
     - [Disassembly](#disassembly)
 
-## Prerequisites
+# Prerequisites
 To follow this tutorial, you will:
 - A [STM32L4R5ZI Board](https://www.st.com/en/microcontrollers-microprocessors/stm32l4r5zi.html)
 - A USB Type-A to Micro-B cable

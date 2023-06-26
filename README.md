@@ -22,6 +22,7 @@
     - [Variables](#variables)
     - [Registers](#registers)
     - [Memory](#memory)
+    - [Disassembly](#disassembly)
 
 ## Introduction
 The STM32L4R5ZI is a 32-bit ARM Cortex-M4 microcontroller. It contains 2MB flash memory, 64KB of SRAM and a 120MHz clock frequency. These microcontrollers have been designed to run at ultra-low power, making them ideal for high performance battery power applications.
@@ -186,6 +187,8 @@ The STM32L4R5ZI comes with a built in debugger. This allows us to step through o
 
 The debugger has many more features that we can use to help us debug our code. Three very useful features are the ability to view variables, registers and memory.
 
+For these features to be available you will need to be in an active debugging session.
+
 ### Variables
 
 If we want to view the variables when debugging we can use the `Variables` window. This will show us the current value of all variables in the current scope. To view this window go to `Window` -> `Show View` -> `Variables`.
@@ -200,3 +203,14 @@ To view the processors registers we can the `Registers` window. This will show u
 
 To view the memory we can the `Memory Browser` window. This will show us the current value of all memory locations and allows us to search through the memory. To view this window go to `Window` -> `Show View` -> `Memory Browser`.
     ![Memory](Images/MemoryBrowser.png)
+
+### Disassembly
+
+One useful feature that the debugger provides is the ability to view the disassembled code. This can be a useful tool to see what the compiler is doing with our code. To view this window go to `Window` -> `Show View` -> `Disassembly`.
+    <br>
+    <br>
+    ![Disassembly](Images/Disassembly.png)
+
+As you step through your C code you will see the corresponding assembly code instruction stepped to as well.
+
+![Stepping Disassembly](Images/Stepping_Assembly.gif)

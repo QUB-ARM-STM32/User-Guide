@@ -21,6 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -42,6 +43,7 @@
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef hlpuart1;
 UART_HandleTypeDef huart3;
+DMA_HandleTypeDef hdma_lpuart1_rx;
 
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
@@ -52,15 +54,31 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_LPUART1_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 /* USER CODE BEGIN PFP */
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+
+PUTCHAR_PROTOTYPE
+{
+  HAL_UART_Transmit(&hlpuart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
+
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+// Initialise byte array
+uint8_t uartBuffer[12] = {0};
 
 /* USER CODE END 0 */
 
@@ -92,10 +110,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_LPUART1_UART_Init();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
+
+  HAL_UART_Receive_DMA(&hlpuart1, uartBuffer, 12);
 
   /* USER CODE END 2 */
 
@@ -106,9 +127,15 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	  // Using HAL to output directly
 	  char data[] = "Hello World!!!\r\n";
 	  HAL_UART_Transmit(&hlpuart1, data, sizeof(data), 100);
 	  HAL_Delay(1000);
+
+	  // Using printf to output (preferred)
+	  const char* name = "Jack";
+	  printf("Your name is: %s\r\n", name);
 
 
   }
@@ -296,6 +323,23 @@ static void MX_USB_OTG_FS_PCD_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMAMUX1_CLK_ENABLE();
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -352,6 +396,13 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	printf("%s\r", uartBuffer);
+	//HAL_UART_Transmit(&hlpuart1, uartBuffer, 12, 100);
+	HAL_UART_Receive_DMA(&hlpuart1, uartBuffer, 12);
+}
 
 /* USER CODE END 4 */
 

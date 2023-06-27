@@ -7,6 +7,7 @@
 - [Project](#project)
   - [Peripheral Setup](#peripheral-setup)
   - [Printing Data](#printing-data)
+  - [Using printf](#using-printf)
 
 # Introduction
 
@@ -56,13 +57,15 @@ HAL_Delay(1000);
 
 Put the above code into the main loop after `/* USER CODE BEGIN 3 */` to preserve it after code generation.
 
+**N.B When outputting a string you must include the `\r\n` at the end. This is because the serial monitor expects a new line character to be sent to it before it will display the data.**
+
 Now compile and run the code onto the board. To actually see the output we will need a serial monitor. STM32CubeIDE has one built-in but it is not very easy to use. I recommend using [Putty](https://www.putty.org/).
 
 Open up Putty, you now need to enter the COM port of the board and the speed. To find the COM port your board is using open the device manager and look under `Ports (COM & LPT)`. The COM port should be listed as `STMicroelectronics STLink Virtual COM Port`.
 
 ![COM Port](./Images/COM_PORT.png)
 
-In my case this is COM4, it will most likely be *different* for you.
+In my case this is COM4, it will most likely be **different** for you.
 
 Now enter this into putty along with the speed of 115200. Ensure to select `Serial` as the connection type.
 
@@ -71,3 +74,46 @@ Now enter this into putty along with the speed of 115200. Ensure to select `Seri
 Now click `Open` and you should see the output from the board.
 
 ![Output](./Images/Output.png)
+
+## Using printf
+
+If you have ever used C before you will know the standard way to output data is using `printf`. This is a very useful function and it would be nice to be able to use it.
+
+To do this we first need to import the standard IO library, ensure to put into the `/* USER CODE BEGIN Includes */` section.
+
+```c
+#include <stdio.h>
+```
+
+Now we need to setup the function prototype to allow `printf` to be used. To do that we need to add the following code below the `/* USER CODE BEGIN PFP */` tag.
+```c
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+
+PUTCHAR_PROTOTYPE
+{
+  HAL_UART_Transmit(&hlpuart1, (uint8_t *)&ch, HAL_MAX_DELAY);
+  return ch;
+}
+```
+
+All this does is redefine the `printf` function to output to the UART device instead of the console.
+
+Now we can use `printf` as normal. To test this we can output the value of a variable.
+
+```c
+const char* name = "Jack";
+printf("Your name is: %s\r\n", name);
+```
+
+When you compile and run your code you should see the appropriate output in the serial monitor.
+
+![Output](./Images/OutputName.png)
+
+Using the printf function is preferred over using the HAL function directly for a number of reasons.
+- Better code readability
+- Easier to use
+- Access to the powerful printf formatting options

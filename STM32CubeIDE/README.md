@@ -22,6 +22,7 @@
     - [Registers](#registers)
     - [Memory](#memory)
     - [Disassembly](#disassembly)
+- [Code Examples](#code-examples)
 
 # Prerequisites
 To follow this tutorial, you will:
@@ -208,3 +209,7 @@ One useful feature that the debugger provides is the ability to view the disasse
 As you step through your C code you will see the corresponding assembly code instruction stepped to as well.
 
 <img src="./Images/SteppingAssembly.gif" width=500>
+
+# Code Examples
+
+There is a number of code examples that can be viewed in the repository. These examples are designed to show you how to use the different features of the board.

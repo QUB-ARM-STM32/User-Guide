@@ -11,6 +11,15 @@
     - [Create a New Project](#create-a-new-project)
   - [Flash an LED](#flash-an-led)
     - [Compile and Run](#compile-and-run)
+  - [Debugging](#debugging)
+    - [Breakpoints](#breakpoints)
+    - [Starting a Debugging Session](#starting-a-debugging-session)
+      - [Step Over](#step-over)
+      - [Step Into](#step-into)
+      - [Stopping the Debugger](#stopping-the-debugger)
+    - [Variable Inspection](#variable-inspection)
+    - [Memory Inspection](#memory-inspection)
+    - [Register Inspection](#register-inspection)
 
 # What is this?
 
@@ -84,7 +93,7 @@ This is basic code to set up a pin to output, we then toggle the pin every 500ms
 
 1. Connect your board to your computer using the appropriate USB cable. Ensure to use the USB port labelled `USB PWR`.
 
-    ![USB Port](./Images/PWR_USB.jpg)
+    ![USB Port](./Images/PWR_USB.JPG)
 
 2. Now click on the `Connected Device` window.
 
@@ -107,3 +116,85 @@ This is basic code to set up a pin to output, we then toggle the pin every 500ms
     ![LED Flashing](./Images/LEDFlashing.gif)
 
 You have now successfully flashed your first program onto the board.
+
+## Debugging
+
+Keil Studio Cloud offers a good range of debugging capabilities. These include: breakpoints, variable inspection, memory inspection and register inspection.
+
+### Breakpoints
+
+To add a breakpoint to our code we simple need to click to the left of the line number we want to break at. A red dot should appear indicating that a breakpoint has been added. When our debugging reaches this point it will temporarily pause execution, allowing you to inspect the state of the program.
+
+![Breakpoint](./Images/Breakpoint.png)
+
+### Starting a Debugging Session
+
+To start a debugging session simply click on the `Debug` button. This will build your project and flash it onto the board. Once the code has been flashed, the debugger will start and the code will begin running.
+
+![Debug](./Images/DebugButton.png)
+
+Building the project can take some time depending on your internet connection.
+
+When the debugger starts you will be greeted with the following screen:
+
+![Debugger](./Images/DebuggingScreen.png)
+
+The debugger will automatically pause execution at the start of the `main` function. To proceed to the next breakpoint press the `Continue` button.
+
+![Continue](./Images/ContinueButton.png)
+
+You can now see that the debugger has stopped execution at the next line.
+
+![Debugger Stopped](./Images/BreakpointStop.png)
+
+#### Step Over
+
+The `Step Over` button will execute the next line of code and stop execution at the next line. If the line to run is a function call, the function will be executed and the debugger will stop at the next line after the function call.
+
+![Step Over](./Images/StepOver.png)
+
+#### Step Into
+
+The `Step Into` button works in the same way as the `Step Over` button, however if the line to run is a function call, the debugger will move into that function and stop at the first line of that function.
+
+![Step Into](./Images/StepInto.png)
+
+In our case we will just `Step Over` to the next line. We will now see that the LED has been turned on. If we continue to `Step Over` we will see that the LED is turned off again.
+
+#### Stopping the Debugger
+
+To stop the debugger simply click on the `Stop` button. This will stop the debugger and return you to the code editor.
+
+![Stop](./Images/StopButton.png)
+
+### Variable Inspection
+
+To inspect the value of a variable you will first need to start a debugging session. When this is done you should be able to see a `Variables` window. If you cannot right click on any of the tabs in the debugging window and select `Variables`.
+
+![Variables](./Images/VariableInspector.png)
+
+Below is what you will see:
+
+![Variables](./Images/Variables.png)
+
+You can view local (variables in the current scope of the program) and global variables (variables in the global scope of the program).
+
+### Memory Inspection
+
+To inspect the memory of the microcontroller you will first need to start a debugging session. When this is done open the `Memory Inspector` window. This can be opened by going to `View` -> `Memory Inspector`.
+
+![Memory Inspector](./Images/MemoryInspector.png)
+
+Using this you can type in the address of any memory location and view its contents. This is very useful when dealing with the flash memory later.
+
+### Register Inspection
+
+Viewing the contents of the registers can be extremely useful when debugging. To view the contents of the registers you will first need to start a debugging session. When this is done open the `Registers` window. To do this right click on any of the tabs in the debugging window and select `Registers`.
+
+![Registers](./Images/RegisterInspector.png)
+
+When a debugging session is active you will see the following:
+
+![Registers](./Images/Registers.png)
+
+To view the contents of the CPU registers click on the `Core` tab, you should now be able to see registers R0 - R15.

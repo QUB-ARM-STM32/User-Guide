@@ -12,7 +12,13 @@ This guide will feature a number of tutorials to get you started with the STM32L
 - Using STM32CubeIDE - This is a great IDE from ST Microelectronics that allows you to program STM32 microcontrollers using C/C++.
 - Using Keil Studio Cloud - This is a web-based IDE that allows you to program STM32 microcontrollers using C/C++ on top of the ARM Mbed OS.
 
-Whatever version you want to use will depend on your needs.
+# What should I use?
+
+Whatever development environment you choose is up to you. Each have their own advantages and disadvantages.
+
+If you want to use a comprehensive IDE that allows for more advanced debugging features and works offline then STM32CubeIDE is for you.
+
+If you want to get something up and running quickly and don't want to install any software then Keil Studio Cloud is for you.
 
 - To access the STM32CubeIDE guide, click [here](./STM32CubeIDE/README.md).
 - To access the Keil Studio Cloud guide, click [here](./KeilStudioCloud/README.md).

@@ -28,12 +28,12 @@ Keil Studio Cloud is a web based IDE that allows for the creation, running and d
 # Prerequisites
 
 To use Keil Studio Cloud you will need the following:
-- Basic knowledge of C++
-- Basic knowledge of embedded systems
+- Basic knowledge of [C++](https://en.wikipedia.org/wiki/C%2B%2B)
+- Basic knowledge of [embedded systems](https://en.wikipedia.org/wiki/Embedded_system)
 - An internet connection
-- A STM32L4R5ZI Nucleo board
-- Optionally an understanding of the ARM Mbed OS
-- Optionally an understanding of ARM assembly
+- A [STM32L4R5ZI Nucleo board](https://www.st.com/en/evaluation-tools/nucleo-l4r5zi.html)
+- Optionally an understanding of the [ARM Mbed OS](https://os.mbed.com/mbed-os/)
+- Optionally an understanding of [ARM assembly](https://en.wikipedia.org/wiki/ARM_architecture_family)
 
 Throughout this tutorial I will be using Google Chrome, however any modern browser should work.
 

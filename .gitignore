@@ -53,3 +53,6 @@ release
 
 # Hello World Example will be ignored
 Hello World/
+
+# ignore the BLINK-LED, it is not needed
+Blink-LED/

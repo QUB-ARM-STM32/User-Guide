@@ -22,7 +22,9 @@
     - [Registers](#registers)
     - [Memory](#memory)
     - [Disassembly](#disassembly)
+- [Opening a Project](#opening-a-project)
 - [Code Examples](#code-examples)
+  - [Example Projects](#example-projects)
 
 # Prerequisites
 To follow this tutorial, you will:
@@ -210,6 +212,21 @@ As you step through your C code you will see the corresponding assembly code ins
 
 <img src="./Images/SteppingAssembly.gif" width=500>
 
+# Opening a Project
+
+To open a project that has already been created you can go to `File` -> `Open Projects from File System`. Yo will see the following window:
+
+![Open Project](./Images/ImportFromFiles.png)
+
+Click `Directory` and navigate to the folder that contains the project. Simply select this folder and then press `Next`. This will import the project into the current workspace and allow you to build and run it as needed.
+
 # Code Examples
 
-There is a number of code examples that can be viewed in the repository. These examples are designed to show you how to use the different features of the board.
+There is a number of code examples that can be viewed in the repository. These examples are designed to show you how to use the different features of the board. They can be found [here](./Projects/)
+
+## Example Projects
+
+The list of available examples are:
+- [Serial Output](./Projects/SerialOutput/)
+- [Serial Input](./Projects/SerialInput/)
+- [Assembly](./Projects/Assembly/)

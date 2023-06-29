@@ -33,11 +33,11 @@ As we are going to be using printf in this tutorial you will need to set this up
 
 To get started we first need to create a new assembly file. To do this, open the `Src` folder found within the `Core` folder. Right click on the `Src` folder and select `New` -> `File`.
 
-![New File](images/NewFile.png)
+![New File](./Images/NewFile.png)
 
 A new window will appear enter the name add.s. The .s extension is used for assembly files. Click `Finish` to create the file.
 
-![add.s](images/File_name.png)
+![add.s](./Images/File_name.png)
 
 ## Writing the assembly code
 
@@ -79,11 +79,11 @@ Next we load the the `num` label into a register. We will load the labels memory
 	.global add
 	.text
 add:
-    LDR R1, =num // loads the address of num into R1
+	LDR R1, =num // loads the address of num into R1
 	LDR R1, [R1] // loads the data from the address in R1
 	.data
 num:
-    .word 10
+	.word 10
 ```
 
 Finally we need to perform our addition on the value passed in. To access values passed in from C we can refer to the ARM user guide, it states:
@@ -97,9 +97,9 @@ Knowing this we can access the value we pass in from C by using `R0`.
 	.global add
 	.text
 add:
-    LDR R1, =num
+	LDR R1, =num
 	LDR R1, [R1]
-    ADD R0, R0, R1 // Adds the value from C to the value in R1
+	ADD R0, R0, R1 // Adds the value from C to the value in R1
 	.data
 num:
     .word 10
@@ -120,13 +120,13 @@ Finally we need to branch back to the calling C function. This can be achieved b
 	.global add
 	.text
 add:
-    LDR R1, =num
+	LDR R1, =num
 	LDR R1, [R1]
-    ADD R0, R0, R1
-    BX LR
+	ADD R0, R0, R1
+	BX LR
 	.data
 num:
-    .word 10
+	.word 10
 ```
 
 ## Calling the function from C

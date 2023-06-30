@@ -20,6 +20,9 @@
     - [Variable Inspection](#variable-inspection)
     - [Memory Inspection](#memory-inspection)
     - [Register Inspection](#register-inspection)
+- [Importing a Project](#importing-a-project)
+- [Code Examples](#code-examples)
+  - [Projects](#projects)
 
 # What is this?
 
@@ -198,3 +201,27 @@ When a debugging session is active you will see the following:
 ![Registers](./Images/Registers.png)
 
 To view the contents of the CPU registers click on the `Core` tab, you should now be able to see registers R0 - R15.
+
+# Importing a Project
+
+Importing a project is very easy to do. All you need is a URL to a GitHub project. For this tutorial I will use the [Mbed OS Blinky Example](https://github.com/ARMmbed/mbed-os-example-blinky).
+
+To import a project go to `File` -> `Clone`.
+
+Where it asks for a URL enter the URL of your project on GitHub and a name.
+
+![Clone](./Images/Clone.png)
+
+You should now see the project you imported in the project explorer.
+
+# Code Examples
+
+There is a number of code examples that can be viewed in the repository. These examples are designed to show you how to use the different features of the board.
+
+## Projects
+
+The list of available projects are:
+
+- [Serial Output](https://github.com/QUB-ARM-STM32/Serial-Output)
+- [Serial Input]()
+- [Assembly]()

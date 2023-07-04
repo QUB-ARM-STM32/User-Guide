@@ -223,5 +223,5 @@ There is a number of code examples that can be viewed in the repository. These e
 The list of available projects are:
 
 - [Serial Output](https://github.com/QUB-ARM-STM32/Serial-Output)
-- [Serial Input]()
+- [Serial Input](https://github.com/QUB-ARM-STM32/Serial-Input)
 - [Assembly]()

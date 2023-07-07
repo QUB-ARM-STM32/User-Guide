@@ -230,3 +230,4 @@ The list of available examples are:
 - [Serial Output](./Projects/SerialOutput/)
 - [Serial Input](./Projects/SerialInput/)
 - [Assembly](./Projects/Assembly/)
+- [AES](https://github.com/QUB-ARM-STM32/STM32-AES)

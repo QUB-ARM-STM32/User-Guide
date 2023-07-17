@@ -14,6 +14,7 @@
   - [STM32L4R5ZI Board Drivers](#stm32l4r5zi-board-drivers)
 - [Creating a New Project](#creating-a-new-project)
   - [Creating a New Project in STM32CubeIDE](#creating-a-new-project-in-stm32cubeide)
+  - [Update 17/04/2023](#update-17042023)
   - [Configuring the Project](#configuring-the-project)
   - [Flashing an LED](#flashing-an-led)
 - [Debugging](#debugging)
@@ -111,6 +112,23 @@ There is two ways to create a new project using the STM tools. The first is to u
 8. The project will now be created. This may take some time. Once it is complete you will see your project in the `Project Explorer` window.
 
     ![Project Explorer](./Images/ProjectExplorer.png)
+
+
+## Update 17/04/2023
+
+A recent update to the STM32CubeIDE has made it necessary to have an account. If when creating a new project you are greeted with the following message:
+
+![Account Required](./Images/AccountRequired.png)
+
+To create an account go to `myST` -> `Login` and following the instructions to create a new account
+
+![myST](./Images/Login.png)
+
+After following the instructions to create an account login. Now open the `.ioc` file for your project. To generate the necessary code click on `Project` -> `Generate Code`. 
+
+![Generate Code](./Images/GenerateCode.png)
+
+It may take some time to download the necessary packages, once it is complete you should see the same project structure as above.
 
 ## Configuring the Project
 

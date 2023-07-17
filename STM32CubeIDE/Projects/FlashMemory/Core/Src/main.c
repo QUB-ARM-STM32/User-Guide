@@ -21,6 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -56,11 +57,90 @@ static void MX_LPUART1_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 /* USER CODE BEGIN PFP */
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+
+PUTCHAR_PROTOTYPE
+{
+  HAL_UART_Transmit(&hlpuart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
+
+uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords);
+uint32_t GetNumberPages(uint32_t startAddr, uint32_t numberWord);
+static uint32_t GetPage(uint32_t Addr);
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords)
+{
+	// unlocks the flash memory
+	HAL_FLASH_Unlock();
+
+	// define a struct that contains information to erase the flash memory
+	FLASH_EraseInitTypeDef EraseInitStruct;
+
+	EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+	EraseInitStruct.Page = GetPage(startPageAddr);
+	EraseInitStruct.NbPages = 1;
+	EraseInitStruct.Banks = 2;
+
+	uint32_t PAGEError;
+	if (HAL_FLASHEx_Erase(&EraseInitStruct, &PAGEError) != HAL_OK)
+	{
+		return HAL_FLASH_GetError();
+	}
+
+	/*
+	int writtenSofar = 0;
+
+	while (writtenSofar * 2 < numberWords)
+	{
+		if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, startPageAddr, data[writtenSofar]) == HAL_OK)
+		{
+			startPageAddr += 8;
+			writtenSofar++;
+		}
+		else{
+			HAL_FLASH_Lock();
+			return HAL_FLASH_GetError();
+		}
+	}
+	*/
+
+	HAL_FLASH_Lock();
+
+	return 0;
+}
+
+uint32_t GetNumberPages(uint32_t startAddr, uint32_t numberWord)
+{
+	return (uint32_t)(((numberWord * 4) / 4096) + 1);
+}
+
+static uint32_t GetPage(uint32_t Addr)
+{
+  uint32_t page = 0;
+
+  if (Addr < (FLASH_BASE + FLASH_BANK_SIZE))
+  {
+    /* Bank 1 */
+    page = (Addr - FLASH_BASE) / FLASH_PAGE_SIZE;
+  }
+  else
+  {
+    /* Bank 2 */
+    page = (Addr - (FLASH_BASE + FLASH_BANK_SIZE)) / FLASH_PAGE_SIZE;
+  }
+
+  return page;
+}
 
 /* USER CODE END 0 */
 
@@ -96,6 +176,11 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
+
+  char* data = "NEW DATA!!!!!!25";
+  printf("size of data: %d\r\n", 8);
+  uint32_t error = FlashData((uint32_t)0x081FF000, (uint64_t*)data, 4);
+  printf("error: %d\r\n", error);
 
   /* USER CODE END 2 */
 

@@ -7,8 +7,13 @@
 - [Understanding the Flash Memory](#understanding-the-flash-memory)
   - [Writing to Flash](#writing-to-flash)
 - [Code](#code)
+  - [Erase](#erase)
   - [Checking The Erase Function](#checking-the-erase-function)
   - [Writing Data](#writing-data)
+  - [Complete Function](#complete-function)
+  - [Checking The Write Function](#checking-the-write-function)
+  - [Reading Data](#reading-data)
+- [References](#references)
 
 # Introduction
 
@@ -37,6 +42,8 @@ When you want to program some data to any flash memory we must first erase the p
 The last thing to mention is that this board has a read width of 64 bits, this means that we must read and write 64 bits at a time. This is important to remember when we are writing our code.
 
 # Code
+
+## Erase
 
 To make this code more understandable we will create a function to allow us to write to flash memory. This function will take the address of the start of the page we want to begin writing to, the data we want to write and the number of words the data is. Define the following function in your main.c file.
 
@@ -132,7 +139,6 @@ uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords)
 		return HAL_FLASH_GetError();
 	}
 
-
     HAL_FLASH_Lock();
     return 0;
 }
@@ -171,3 +177,157 @@ After we run this you should see the error code as `0` indicating no problem. Ch
 
 ## Writing Data
 
+Writing data is quite simple. All that is needed is to loop through our data and write to the flash. Note that we must write 64 bits at a time and we must write to the page that we erased previously.
+
+To get started we can simply have a loop that iterates through our data.
+
+```c
+int doubleWordsWritten = 0;
+
+	while (doubleWordsWritten * 2 < numberWords)
+	{
+
+	}
+```
+
+The variable `doubleWordsWritten` is used to keep track of how many double words we have written to the flash. We keep track of double words because we are writing 64 bits at a time.
+
+Next we need to flash the memory this can be done using the following code:
+
+```c
+int doubleWordsWritten = 0;
+
+	while (doubleWordsWritten * 2 < numberWords)
+	{
+    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, startPageAddr, data[doubleWordsWritten]) != HAL_OK)
+		{
+			HAL_FLASH_Lock();
+			return HAL_FLASH_GetError();
+		}
+		startPageAddr += 8;
+		doubleWordsWritten++;
+	}
+```
+
+The function `HAL_FLASH_Program` is what we use to program data into the flash memory. As can be seen we are programming a double word (64 bits), we use the address we supplied as the starting location. As our data is a 64 bit pointer we can simply access the first 64 bits by accessing element 0.
+
+If this function fails we return the error code and lock the flash memory.
+
+If it does not fail we will increment the address by 8 (64 bits) and increment the number of double words written.
+
+## Complete Function
+
+The complete function is shown below:
+
+```c
+uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords)
+{
+	// unlocks the flash memory
+	HAL_FLASH_Unlock();
+
+	// define a struct that contains information to erase the flash memory
+	FLASH_EraseInitTypeDef EraseInitStruct;
+
+	EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+	EraseInitStruct.Page = GetPage(startPageAddr);
+	EraseInitStruct.NbPages = 1;
+	EraseInitStruct.Banks = 2;
+
+	uint32_t PAGEError;
+	if (HAL_FLASHEx_Erase(&EraseInitStruct, &PAGEError) != HAL_OK)
+	{
+		return HAL_FLASH_GetError();
+	}
+
+
+	int doubleWordsWritten = 0;
+
+	while (doubleWordsWritten * 2 < numberWords)
+	{
+		if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, startPageAddr, data[doubleWordsWritten]) != HAL_OK)
+		{
+			HAL_FLASH_Lock();
+			return HAL_FLASH_GetError();
+		}
+		startPageAddr += 8;
+		doubleWordsWritten++;
+	}
+
+	HAL_FLASH_Lock();
+
+	return 0;
+}
+```
+
+
+## Checking The Write Function
+
+To check if this function works correctly we can program some text into the flash memory. To do this we can use the following code:
+
+```c
+char* data = "Hello World!!!";
+int numWords = strlen(data) / 4 + ((strlen(data) % 4) != 0);
+printf("Num Words: %d\r\n", numWords);
+
+uint32_t error = FlashData((uint32_t)0x081FF000, (uint64_t*)data, (uint32_t)numWords);
+printf("error: %d\r\n", error);
+```
+
+This code will write the string `Hello World!!!` to the flash memory. We calculate the number of words needed for this string based on its length. We then call the function ensuring to cast to the correct data types.
+
+If we use the STM32CubeProgrammer again, we should see at the address `0x081FF000` the string `Hello World!!!` has been programmed.
+
+![Result](./Images/Result.png)
+
+## Reading Data
+
+Reading data is quite simple, we can simply use a pointer to the address and iterate over the data.
+
+We can define a function called `ReadFlash`:
+
+```c
+void ReadFlash(uint32_t address, uint32_t numberWords, uint32_t* buffer)
+{
+
+}
+```
+
+Here we take in the address we want to start reading from, the number of words we want to read and a buffer to store the data in.
+
+We can then use the following code to read the data:
+
+```c
+void ReadFlash(uint32_t address, uint32_t numberWords, uint32_t* buffer)
+{
+while (numberWords > 0)
+	{
+		*buffer = *(uint32_t*)address;
+		address += 4;
+		buffer++;
+		numberWords -= 1;
+	}
+}
+```
+
+Here we simply loop over the data and read it into the buffer word by word.
+
+To call the this function we can use the following code:
+
+```c
+uint32_t* readData = malloc(sizeof(uint32_t) * numWords);
+ReadFlash(0x081FF000, numWords, readData);
+printf("Read Data: %s\r\n", (char*)readData);
+```
+
+We allocate some memory to store the data in then we call the function with the same address as to where we wrote to. We then print the data to the console.
+
+This will produce the following output:
+
+![Read Data](./Images/ReadData.png)
+
+# References
+
+This guide uses material from the following sites:
+
+- [controllerstech.com](https://controllerstech.com/flash-programming-in-stm32/)
+- [ST GitHub](https://github.com/STMicroelectronics/STM32CubeL4/blob/master/Projects/NUCLEO-L4R5ZI/Examples/FLASH/FLASH_FastProgram/Src/main.c)

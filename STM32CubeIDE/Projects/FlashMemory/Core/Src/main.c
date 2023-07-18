@@ -22,6 +22,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 /* USER CODE END Includes */
 
@@ -72,6 +74,7 @@ PUTCHAR_PROTOTYPE
 uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords);
 uint32_t GetNumberPages(uint32_t startAddr, uint32_t numberWord);
 static uint32_t GetPage(uint32_t Addr);
+void ReadFlash(uint32_t address, uint32_t numberWords, uint32_t* buffer);
 
 /* USER CODE END PFP */
 
@@ -97,22 +100,19 @@ uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords)
 		return HAL_FLASH_GetError();
 	}
 
-	/*
-	int writtenSofar = 0;
 
-	while (writtenSofar * 2 < numberWords)
+	int doubleWordsWritten = 0;
+
+	while (doubleWordsWritten * 2 < numberWords)
 	{
-		if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, startPageAddr, data[writtenSofar]) == HAL_OK)
+		if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, startPageAddr, data[doubleWordsWritten]) != HAL_OK)
 		{
-			startPageAddr += 8;
-			writtenSofar++;
-		}
-		else{
 			HAL_FLASH_Lock();
 			return HAL_FLASH_GetError();
 		}
+		startPageAddr += 8;
+		doubleWordsWritten++;
 	}
-	*/
 
 	HAL_FLASH_Lock();
 
@@ -140,6 +140,17 @@ static uint32_t GetPage(uint32_t Addr)
   }
 
   return page;
+}
+
+void ReadFlash(uint32_t address, uint32_t numberWords, uint32_t* buffer)
+{
+	while (numberWords > 0)
+	{
+		*buffer = *(uint32_t*)address;
+		address += 4;
+		buffer++;
+		numberWords -= 1;
+	}
 }
 
 /* USER CODE END 0 */
@@ -177,10 +188,17 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 
-  char* data = "NEW DATA!!!!!!25";
-  printf("size of data: %d\r\n", 8);
-  uint32_t error = FlashData((uint32_t)0x081FF000, (uint64_t*)data, 4);
-  printf("error: %d\r\n", error);
+  char* data = "Hello World!!!";
+  int numWords = strlen(data) / 4 + ((strlen(data) % 4) != 0);
+  printf("Num Words: %d\r\n", numWords);
+
+  uint32_t error = FlashData((uint32_t)0x081FF000, (uint64_t*)data, (uint32_t)numWords);
+  printf("error: %lu\r\n", error);
+
+  uint32_t* readData = malloc(sizeof(uint32_t) * numWords);
+  ReadFlash(0x081FF000, numWords, readData);
+  printf("Read Data: %s\r\n", (char*)readData);
+
 
   /* USER CODE END 2 */
 

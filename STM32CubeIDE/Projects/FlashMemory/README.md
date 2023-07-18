@@ -56,7 +56,7 @@ To set up this function we first need to unlock the flash memory. Normally the f
 ```c
 uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords)
 {
-    HAL_FLASH_Unlock();
+  HAL_FLASH_Unlock();
 }
 ```
 
@@ -65,9 +65,9 @@ Next we have to create a new struct that we use to define what to erase.
 ```c
 uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords)
 {
-    HAL_FLASH_Unlock();
-
-    FLASH_EraseInitTypeDef EraseInitStruct;
+  HAL_FLASH_Unlock();
+  
+  FLASH_EraseInitTypeDef EraseInitStruct;
 }
 ```
 
@@ -81,14 +81,14 @@ This struct makes us define 4 things:
 ```c
 uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords)
 {
-    HAL_FLASH_Unlock();
+  HAL_FLASH_Unlock();
 
-    FLASH_EraseInitTypeDef EraseInitStruct;
+  FLASH_EraseInitTypeDef EraseInitStruct;
 
-    EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
-	EraseInitStruct.Page = GetPage(startPageAddr);
-	EraseInitStruct.NbPages = 1;
-	EraseInitStruct.Banks = 2;
+  EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+  EraseInitStruct.Page = GetPage(startPageAddr);
+  EraseInitStruct.NbPages = 1;
+  EraseInitStruct.Banks = 2;
 }
 ```
 
@@ -124,23 +124,23 @@ Now that we have defined our erase struct we can erase the page we want to write
 ```c
 uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords)
 {
-    HAL_FLASH_Unlock();
+  HAL_FLASH_Unlock();
+  
+  FLASH_EraseInitTypeDef EraseInitStruct;
 
-    FLASH_EraseInitTypeDef EraseInitStruct;
+  EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+  EraseInitStruct.Page = GetPage(startPageAddr);
+  EraseInitStruct.NbPages = 1;
+  EraseInitStruct.Banks = 2;
+  
+  uint32_t PAGEError;
+  if (HAL_FLASHEx_Erase(&EraseInitStruct, &PAGEError) != HAL_OK)
+  {
+	  return HAL_FLASH_GetError();
+  }
 
-    EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
-	EraseInitStruct.Page = GetPage(startPageAddr);
-	EraseInitStruct.NbPages = 1;
-	EraseInitStruct.Banks = 2;
-
-    uint32_t PAGEError;
-	if (HAL_FLASHEx_Erase(&EraseInitStruct, &PAGEError) != HAL_OK)
-	{
-		return HAL_FLASH_GetError();
-	}
-
-    HAL_FLASH_Lock();
-    return 0;
+  HAL_FLASH_Lock();
+  return 0;
 }
 ```
 
@@ -184,10 +184,10 @@ To get started we can simply have a loop that iterates through our data.
 ```c
 int doubleWordsWritten = 0;
 
-	while (doubleWordsWritten * 2 < numberWords)
-	{
+while (doubleWordsWritten * 2 < numberWords)
+{
 
-	}
+}
 ```
 
 The variable `doubleWordsWritten` is used to keep track of how many double words we have written to the flash. We keep track of double words because we are writing 64 bits at a time.
@@ -197,16 +197,16 @@ Next we need to flash the memory this can be done using the following code:
 ```c
 int doubleWordsWritten = 0;
 
-	while (doubleWordsWritten * 2 < numberWords)
-	{
-    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, startPageAddr, data[doubleWordsWritten]) != HAL_OK)
-		{
-			HAL_FLASH_Lock();
-			return HAL_FLASH_GetError();
-		}
-		startPageAddr += 8;
-		doubleWordsWritten++;
-	}
+while (doubleWordsWritten * 2 < numberWords)
+{
+  if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, startPageAddr, data[doubleWordsWritten]) != HAL_OK)
+  {
+  	HAL_FLASH_Lock();
+  	return HAL_FLASH_GetError();
+  }
+  startPageAddr += 8;
+  doubleWordsWritten++;
+}
 ```
 
 The function `HAL_FLASH_Program` is what we use to program data into the flash memory. As can be seen we are programming a double word (64 bits), we use the address we supplied as the starting location. As our data is a 64 bit pointer we can simply access the first 64 bits by accessing element 0.
@@ -222,40 +222,36 @@ The complete function is shown below:
 ```c
 uint32_t FlashData(uint32_t startPageAddr, uint64_t* data, uint32_t numberWords)
 {
-	// unlocks the flash memory
-	HAL_FLASH_Unlock();
+  // unlocks the flash memory
+  HAL_FLASH_Unlock();
 
-	// define a struct that contains information to erase the flash memory
-	FLASH_EraseInitTypeDef EraseInitStruct;
+  // define a struct that contains information to erase the flash memory
+  FLASH_EraseInitTypeDef EraseInitStruct; 
+  EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+  EraseInitStruct.Page = GetPage(startPageAddr);
+  EraseInitStruct.NbPages = 1;
+  EraseInitStruct.Banks = 2;
 
-	EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
-	EraseInitStruct.Page = GetPage(startPageAddr);
-	EraseInitStruct.NbPages = 1;
-	EraseInitStruct.Banks = 2;
+  uint32_t PAGEError;
+  if (HAL_FLASHEx_Erase(&EraseInitStruct, &PAGEError) != HAL_OK)
+  {
+  	return HAL_FLASH_GetError();
+  }
 
-	uint32_t PAGEError;
-	if (HAL_FLASHEx_Erase(&EraseInitStruct, &PAGEError) != HAL_OK)
-	{
-		return HAL_FLASH_GetError();
-	}
+  int doubleWordsWritten = 0; 
+  while (doubleWordsWritten * 2 < numberWords)
+  {
+  	if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, startPageAddr, data[doubleWordsWritten]) != HAL_OK)
+  	{
+  		HAL_FLASH_Lock();
+  		return HAL_FLASH_GetError();
+  	}
+  	startPageAddr += 8;
+  	doubleWordsWritten++;
+  }
 
-
-	int doubleWordsWritten = 0;
-
-	while (doubleWordsWritten * 2 < numberWords)
-	{
-		if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, startPageAddr, data[doubleWordsWritten]) != HAL_OK)
-		{
-			HAL_FLASH_Lock();
-			return HAL_FLASH_GetError();
-		}
-		startPageAddr += 8;
-		doubleWordsWritten++;
-	}
-
-	HAL_FLASH_Lock();
-
-	return 0;
+  HAL_FLASH_Lock(); 
+  return 0;
 }
 ```
 
@@ -299,13 +295,13 @@ We can then use the following code to read the data:
 ```c
 void ReadFlash(uint32_t address, uint32_t numberWords, uint32_t* buffer)
 {
-while (numberWords > 0)
-	{
-		*buffer = *(uint32_t*)address;
-		address += 4;
-		buffer++;
-		numberWords -= 1;
-	}
+  while (numberWords > 0)
+  {
+    *buffer = *(uint32_t*)address;
+    address += 4;
+    buffer++;
+    numberWords -= 1;
+  }
 }
 ```
 

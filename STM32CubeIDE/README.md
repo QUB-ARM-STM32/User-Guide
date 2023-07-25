@@ -250,3 +250,5 @@ The list of available examples are:
 - [Assembly](./Projects/Assembly/)
 - [Flash Memory](./Projects/FlashMemory/)
 - [AES](https://github.com/QUB-ARM-STM32/STM32-AES)
+- [Baby-Kyber](https://github.com/QUB-ARM-STM32/Baby-Kyber)
+- [pqm4](https://github.com/QUB-ARM-STM32/pqm4#pqm4)

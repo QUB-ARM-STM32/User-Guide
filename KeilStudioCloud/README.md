@@ -224,4 +224,5 @@ The list of available projects are:
 
 - [Serial Output](https://github.com/QUB-ARM-STM32/Serial-Output)
 - [Serial Input](https://github.com/QUB-ARM-STM32/Serial-Input)
-- [Assembly]()
+- [Assembly](https://github.com/QUB-ARM-STM32/Assembly-STM32)
+- [Flash](https://github.com/QUB-ARM-STM32/Flash-MbedOS)

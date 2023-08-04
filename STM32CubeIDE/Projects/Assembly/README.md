@@ -6,13 +6,13 @@
 - [Introduction](#introduction)
 - [Prerequisites](#prerequisites)
 - [Setting Up a project](#setting-up-a-project)
-	- [Creating the assembly file](#creating-the-assembly-file)
-	- [Writing the assembly code](#writing-the-assembly-code)
-	- [Calling the function from C](#calling-the-function-from-c)
-	- [Debugging the assembly code](#debugging-the-assembly-code)
+  - [Creating the assembly file](#creating-the-assembly-file)
+  - [Writing the assembly code](#writing-the-assembly-code)
+  - [Calling the function from C](#calling-the-function-from-c)
+  - [Debugging the assembly code](#debugging-the-assembly-code)
 - [Advanced Examples](#advanced-examples)
-	- [Passing multiple parameters](#passing-multiple-parameters)
-	- [Reversing a string](#reversing-a-string)
+  - [Passing multiple parameters](#passing-multiple-parameters)
+  - [Reversing a string](#reversing-a-string)
 
 # Introduction
 
@@ -44,11 +44,11 @@ A new window will appear enter the name add.s. The .s extension is used for asse
 To showcase the basics of assembly we are going to be writing a simple function that takes a number in from C and adds 10 to it. We will then return this value to C. To do this we first need to set up our assembly file. Open it and copy the following code into it:
 
 ```ARM
-	.syntax unified
-	.global add
-	.text
+    .syntax unified
+    .global add
+    .text
 add:
-	.data
+    .data
 ```
 
 - `.syntax unified` tells the assembler to use the unified syntax. This is a common syntax across both THUMB and ARM instructions
@@ -63,11 +63,11 @@ Next we need to define our function. We will define a constant `.word` of `10`. 
 We will define our data label first:
 
 ```ARM
-	.syntax unified
-	.global add
-	.text
+    .syntax unified
+    .global add
+    .text
 add:
-	.data
+    .data
 num:
     .word 10
 ```
@@ -75,15 +75,15 @@ num:
 Next we load the the `num` label into a register. We will load the labels memory address into `R1` and then load the data from that address into `R1`.
 
 ```ARM
-	.syntax unified
-	.global add
-	.text
+    .syntax unified
+    .global add
+    .text
 add:
-	LDR R1, =num // loads the address of num into R1
-	LDR R1, [R1] // loads the data from the address in R1
-	.data
+    LDR R1, =num // loads the address of num into R1
+    LDR R1, [R1] // loads the data from the address in R1
+    .data
 num:
-	.word 10
+    .word 10
 ```
 
 Finally we need to perform our addition on the value passed in. To access values passed in from C we can refer to the ARM user guide, it states:
@@ -93,14 +93,14 @@ Finally we need to perform our addition on the value passed in. To access values
 Knowing this we can access the value we pass in from C by using `R0`.
 
 ```ARM
-	.syntax unified
-	.global add
-	.text
+    .syntax unified
+    .global add
+    .text
 add:
-	LDR R1, =num
-	LDR R1, [R1]
-	ADD R0, R0, R1 // Adds the value from C to the value in R1
-	.data
+    LDR R1, =num
+    LDR R1, [R1]
+    ADD R0, R0, R1 // Adds the value from C to the value in R1
+    .data
 num:
     .word 10
 ```
@@ -116,17 +116,17 @@ Finally we need to branch back to the calling C function. This can be achieved b
 **N.B You must include `BX LR` at the end of every function you call, otherwise you will see undefined behavior.**
 
 ```ARM
-	.syntax unified
-	.global add
-	.text
+    .syntax unified
+    .global add
+    .text
 add:
-	LDR R1, =num
-	LDR R1, [R1]
-	ADD R0, R0, R1
-	BX LR
-	.data
+    LDR R1, =num
+    LDR R1, [R1]
+    ADD R0, R0, R1
+    BX LR
+    .data
 num:
-	.word 10
+    .word 10
 ```
 
 ## Calling the function from C
@@ -190,12 +190,12 @@ Here we are passing 5 parameters so `a` to `d` will be passed in through registe
 In a file called `pass_five_values.s` I have the following assembly.
 
 ```ARM
-	.syntax unified
-	.global pass_five_values
-	.text
+    .syntax unified
+    .global pass_five_values
+    .text
 pass_five_values:
-	LDR R4, [SP]
-	BX LR
+    LDR R4, [SP]
+    BX LR
 ```
 
 Here we are loading the value of `e` from the stack into `R4`. `SP` is known as the `Stack Pointer`, it points to the position in memory where the top of the stack is, which is also where our last value is found.
@@ -225,23 +225,23 @@ The string will be reversed in place, meaning the original string will be modifi
 Below is the code for the assembly function:
 
 ```ARM
-	.syntax unified
-	.global reverse_string
-	.text
+    .syntax unified
+    .global reverse_string
+    .text
 reverse_string:
-	MOV R2, R0 // up counter
-	SUB R1, R1, #2 // sub two, one to account for index and one for the '\0'
-	ADD R3, R2, R1 // down counter
+    MOV R2, R0 // up counter
+    SUB R1, R1, #2 // sub two, one to account for index and one for the '\0'
+    ADD R3, R2, R1 // down counter
 loop:
-	LDRB R4, [R2] // load first char
-	LDRB R5, [R3] // load last char
-	STRB R5, [R2] // put first char into position of last
-	STRB R4, [R3] // put last char into position of first
-	SUB R3, R3, #1 // decrement down counter
-	ADD R2, R2, #1 // increment up counter
-	CMP R3, R2 // compare up and down counters
-	BGT loop // if down counter is greater than up counter, loop
-	BX LR
+    LDRB R4, [R2] // load first char
+    LDRB R5, [R3] // load last char
+    STRB R5, [R2] // put first char into position of last
+    STRB R4, [R3] // put last char into position of first
+    SUB R3, R3, #1 // decrement down counter
+    ADD R2, R2, #1 // increment up counter
+    CMP R3, R2 // compare up and down counters
+    BGT loop // if down counter is greater than up counter, loop
+    BX LR
 ```
 
 We can call this function from C as follows:

@@ -5,9 +5,9 @@
 - [Contents](#contents)
 - [Introduction](#introduction)
 - [Project](#project)
-  - [Receiving Data from the UART](#receiving-data-from-the-uart)
-  - [Peripheral Setup](#peripheral-setup)
-  - [Code](#code)
+	- [Receiving Data from the UART](#receiving-data-from-the-uart)
+	- [Peripheral Setup](#peripheral-setup)
+	- [Code](#code)
 
 # Introduction
 
@@ -33,7 +33,7 @@ The final method is to use DMA. DMA stands for `Direct Memory Access`, this allo
 
 For this tutorial we are going to be using `LPUART1` again. Set up this peripheral in the same way as the [Serial Output](../SerialOutput/README.md#peripheral-setup) project. 
 
-![LPUART1 Setup](images/LPUART1Conf.png)
+![LPUART1 Setup](./Images/LPUART1Conf.png)
 
 We now need to enable the DMA peripheral to work with this UART. With the `LPUART1` configuration screen open, select `DMA Settings`.
 

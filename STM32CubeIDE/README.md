@@ -14,7 +14,7 @@
   - [STM32L4R5ZI Board Drivers](#stm32l4r5zi-board-drivers)
 - [Creating a New Project](#creating-a-new-project)
   - [Creating a New Project in STM32CubeIDE](#creating-a-new-project-in-stm32cubeide)
-  - [Update 17/04/2023](#update-17042023)
+  - [Update 17/07/2023](#update-17072023)
   - [Configuring the Project](#configuring-the-project)
   - [Flashing an LED](#flashing-an-led)
 - [Debugging](#debugging)
@@ -114,7 +114,7 @@ There is two ways to create a new project using the STM tools. The first is to u
     ![Project Explorer](./Images/ProjectExplorer.png)
 
 
-## Update 17/04/2023
+## Update 17/07/2023
 
 A recent update to the STM32CubeIDE has made it necessary to have an account. If when creating a new project you are greeted with the following message:
 
@@ -161,9 +161,13 @@ Now that we have our project set up we can start writing some code. We are going
 
 3. To build our project go to `Project` -> `Build Project`. This will build our project and generate the necessary files to run on the microcontroller.
 
-4. To flash our project and run it we go to `Run` -> `Run`, a window may appear asking you to edit the launch configuration. Click `OK` and the program will be flashed to the microcontroller.
+4. Connect the board via USB to your computer ensuring to use the debugging USB slot on the board.
 
-5. Observer the board, the green LED should be toggled on and off every half a second.
+    ![USB](./Images/PWR_USB.JPG)
+
+5. To flash our project and run it we go to `Run` -> `Run`, a window may appear asking you to edit the launch configuration. Click `OK` and the program will be flashed to the microcontroller.
+
+6. Observe the board, the green LED should be toggled on and off every half a second.
 
     ![Blinking LED](./Images/Blinking.gif)
 
@@ -207,24 +211,26 @@ For these features to be available you will need to be in an active debugging se
 ### Variables
 
 If we want to view the variables when debugging we can use the `Variables` window. This will show us the current value of all variables in the current scope. To view this window go to `Window` -> `Show View` -> `Variables`.
-    ![Variables](./Images/Variables.png)
+
+![Variables](./Images/Variables.png)
 
 ### Registers
 
 To view the processors registers we can the `Registers` window. This will show us the current value of all registers. To view this window go to `Window` -> `Show View` -> `Registers`.
-    ![Registers](./Images/Registers.png)
+
+![Registers](./Images/Registers.png)
 
 ### Memory
 
 To view the memory we can the `Memory Browser` window. This will show us the current value of all memory locations and allows us to search through the memory. To view this window go to `Window` -> `Show View` -> `Memory Browser`.
-    ![Memory](./Images/MemoryBrowser.png)
+
+![Memory](./Images/MemoryBrowser.png)
 
 ### Disassembly
 
 One useful feature that the debugger provides is the ability to view the disassembled code. This can be a useful tool to see what the compiler is doing with our code. To view this window go to `Window` -> `Show View` -> `Disassembly`.
-    <br>
-    <br>
-    ![Disassembly](./Images/Disassembly.png)
+    
+![Disassembly](./Images/Disassembly.png)
 
 As you step through your C code you will see the corresponding assembly code instruction stepped to as well.
 
